@@ -4,6 +4,18 @@ A production-deployed proof of concept for a real RevOps question: **did a lead 
 
 The project demonstrates an end-to-end automation built with **n8n, Python/FastAPI, PostgreSQL and Google Sheets**.
 
+## Production demo
+
+| Lead ingestion | Sale conversion & metrics |
+| --- | --- |
+| ![Meta Lead Intake workflow](docs/screenshots/workflow1.png) | ![Sale Conversion workflow](docs/screenshots/workflow2.png) |
+
+**Live reporting output**
+
+![Google Sheets representative profitability report](docs/screenshots/sheet.png)
+
+The screenshots above show the deployed flow processing synthetic production-test data end to end.
+
 ## Live demo
 
 - API health: https://lead-sales-automation-production.up.railway.app/health
