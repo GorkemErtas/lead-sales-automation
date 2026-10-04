@@ -33,3 +33,6 @@ class LeadRepository:
         db.commit()
         db.refresh(lead)
         return lead
+
+    def list_recent(self, db: Session, limit: int = 20):
+        return db.scalars(select(Lead).order_by(Lead.created_at.desc()).limit(limit)).all()
