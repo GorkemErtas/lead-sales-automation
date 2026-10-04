@@ -12,15 +12,12 @@
       "name": "Sale Conversion Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [
-        0,
-        0
-      ]
+      "position": [0, 0]
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ 'http://api:8000/api/v1/leads/' + $json.body.lead_id + '/sale' }}",
+        "url": "={{ 'http://api:8000/api/v1/leads/by-meta/' + encodeURIComponent($json.body.meta_lead_id) + '/sale' }}",
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
@@ -31,10 +28,7 @@
       "name": "Create Sale",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        260,
-        0
-      ]
+      "position": [260, 0]
     },
     {
       "parameters": {
@@ -45,34 +39,15 @@
       "name": "Get Representative Metrics",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        520,
-        0
-      ]
+      "position": [520, 0]
     }
   ],
   "connections": {
     "Sale Conversion Webhook": {
-      "main": [
-        [
-          {
-            "node": "Create Sale",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+      "main": [[{"node": "Create Sale", "type": "main", "index": 0}]]
     },
     "Create Sale": {
-      "main": [
-        [
-          {
-            "node": "Get Representative Metrics",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+      "main": [[{"node": "Get Representative Metrics", "type": "main", "index": 0}]]
     }
   },
   "settings": {},
