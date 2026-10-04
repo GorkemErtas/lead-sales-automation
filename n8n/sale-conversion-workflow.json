@@ -2,54 +2,29 @@
   "name": "Sale Conversion and Profitability",
   "nodes": [
     {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "sale-conversion",
-        "responseMode": "lastNode",
-        "options": {}
-      },
-      "id": "sale-webhook",
-      "name": "Sale Conversion Webhook",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [0, 0]
+      "parameters":{"httpMethod":"POST","path":"sale-conversion","responseMode":"lastNode","options":{}},
+      "id":"sale-webhook","name":"Sale Conversion Webhook","type":"n8n-nodes-base.webhook","typeVersion":2,"position":[0,0]
     },
     {
-      "parameters": {
-        "method": "POST",
-        "url": "={{ 'http://api:8000/api/v1/leads/by-meta/' + encodeURIComponent($json.body.meta_lead_id) + '/sale' }}",
-        "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({ revenue: $json.body.revenue }) }}",
-        "options": {}
+      "parameters":{
+        "method":"POST",
+        "url":"={{ ($env.API_BASE_URL || 'http://api:8000') + '/api/v1/leads/by-meta/' + encodeURIComponent($json.body.meta_lead_id) + '/sale' }}",
+        "sendBody":true,"contentType":"raw","rawContentType":"application/json",
+        "body":"={{ JSON.stringify({ revenue: $json.body.revenue }) }}","options":{}
       },
-      "id": "create-sale",
-      "name": "Create Sale",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [260, 0]
+      "id":"create-sale","name":"Create Sale","type":"n8n-nodes-base.httpRequest","typeVersion":4.2,"position":[260,0]
     },
     {
-      "parameters": {
-        "url": "={{ 'http://api:8000/api/v1/analytics/representatives/' + $json.representative_id }}",
-        "options": {}
+      "parameters":{
+        "url":"={{ ($env.API_BASE_URL || 'http://api:8000') + '/api/v1/analytics/representatives/' + $json.representative_id }}",
+        "options":{}
       },
-      "id": "metrics",
-      "name": "Get Representative Metrics",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [520, 0]
+      "id":"metrics","name":"Get Representative Metrics","type":"n8n-nodes-base.httpRequest","typeVersion":4.2,"position":[520,0]
     }
   ],
-  "connections": {
-    "Sale Conversion Webhook": {
-      "main": [[{"node": "Create Sale", "type": "main", "index": 0}]]
-    },
-    "Create Sale": {
-      "main": [[{"node": "Get Representative Metrics", "type": "main", "index": 0}]]
-    }
+  "connections":{
+    "Sale Conversion Webhook":{"main":[[{"node":"Create Sale","type":"main","index":0}]]},
+    "Create Sale":{"main":[[{"node":"Get Representative Metrics","type":"main","index":0}]]}
   },
-  "settings": {},
-  "active": false
+  "settings":{},"active":false
 }
