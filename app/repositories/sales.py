@@ -15,6 +15,13 @@ class SaleRepository:
             .where(Lead.id == lead_id)
         )
 
+    def get_lead_by_meta_id(self, db: Session, meta_lead_id: str) -> Lead | None:
+        return db.scalar(
+            select(Lead)
+            .options(joinedload(Lead.representative))
+            .where(Lead.meta_lead_id == meta_lead_id)
+        )
+
     def get_by_lead_id(self, db: Session, lead_id: uuid.UUID) -> Sale | None:
         return db.scalar(select(Sale).where(Sale.lead_id == lead_id))
 
