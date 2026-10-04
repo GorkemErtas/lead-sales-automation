@@ -15,3 +15,6 @@ class LeadService:
             return existing, False
 
         return self.repository.create(db, payload), True
+
+    def list_recent(self, db: Session, limit: int = 20):
+        return self.repository.list_recent(db, limit)
