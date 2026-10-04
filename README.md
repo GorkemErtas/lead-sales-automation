@@ -2,7 +2,7 @@
 
 A production-deployed proof of concept for a real RevOps question: **did a lead acquired through Meta Ads become a sale, and what is the assigned sales representative's cost/profitability?**
 
-The project demonstrates an end-to-end automation built with **n8n, Python/FastAPI, PostgreSQL and Google Sheets**.
+The project demonstrates an end-to-end automation built with **n8n, Python/FastAPI, PostgreSQL and Google Sheets**, with an interactive live RevOps dashboard for testing the flow.
 
 ## Production demo
 
@@ -18,6 +18,7 @@ The screenshots above show the deployed flow processing synthetic production-tes
 
 ## Live demo
 
+- **Interactive RevOps dashboard:** https://lead-sales-automation-production.up.railway.app/dashboard
 - API health: https://lead-sales-automation-production.up.railway.app/health
 - Swagger / OpenAPI: https://lead-sales-automation-production.up.railway.app/docs
 - n8n is deployed on Railway and the workflows are published. Public write-webhook URLs are intentionally not advertised here.
@@ -57,7 +58,7 @@ Production services are deployed on Railway with persistent PostgreSQL and n8n s
 3. FastAPI persists the lead and assigned representative in PostgreSQL.
 4. When the lead converts, a second n8n webhook records the sale using the external `meta_lead_id`.
 5. FastAPI calculates the representative's latest conversion and profitability metrics.
-6. n8n upserts those metrics into Google Sheets using `representative_id` as the key.
+6. n8n upserts those metrics into Google Sheets using `representative_id` as the key.\n7. The live dashboard reads aggregate and recent-lead data from FastAPI and refreshes automatically. Demo controls can create synthetic leads and convert open leads through the published n8n workflows.
 
 ### Lead example
 
@@ -113,10 +114,10 @@ Google OAuth credentials, spreadsheet identifiers and secrets are deliberately n
 ## API
 
 - `GET /health`
-- `POST /api/v1/leads`
+- `GET /api/v1/leads/recent`\n- `POST /api/v1/leads`
 - `POST /api/v1/leads/{lead_id}/sale`
 - `POST /api/v1/leads/by-meta/{meta_lead_id}/sale`
-- `GET /api/v1/analytics/representatives/{representative_id}`
+- `GET /api/v1/analytics/representatives/{representative_id}`\n- `GET /api/v1/analytics/dashboard`
 
 Interactive documentation is available in the live Swagger deployment linked above.
 
