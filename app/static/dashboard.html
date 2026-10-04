@@ -24,7 +24,8 @@
       <article><p>Net Profit</p><strong id="profit">—</strong><small id="roi">— ROI</small></article>
     </section>
 
-    <section class="grid">\n      <article class="panel wide recent-panel"><div class="panel-head"><div><p class="eyebrow">LIVE PIPELINE</p><h2>Recent leads</h2></div><small>Select an open lead to convert it</small></div><div class="table-wrap"><table><thead><tr><th>Representative</th><th>Campaign</th><th>Ad Cost</th><th>Status</th><th>Action</th></tr></thead><tbody id="leadRows"></tbody></table></div></article>
+    <section class="grid">
+      <article class="panel wide recent-panel"><div class="panel-head"><div><p class="eyebrow">LIVE PIPELINE</p><h2>Recent leads</h2></div><small>Select an open lead to convert it</small></div><div class="table-wrap"><table><thead><tr><th>Representative</th><th>Campaign</th><th>Ad Cost</th><th>Status</th><th>Action</th></tr></thead><tbody id="leadRows"></tbody></table></div></article>
       <article class="panel wide">
         <div class="panel-head"><div><p class="eyebrow">PERFORMANCE</p><h2>Representative profitability</h2></div><span id="updated">Loading…</span></div>
         <div class="table-wrap">
@@ -48,7 +49,11 @@
       </article>
     </section>
 
-    <div class="modal-backdrop" id="leadModal"><section class="modal"><button class="close" data-close="leadModal">×</button><p class="eyebrow">DEMO INPUT</p><h2>Add a lead</h2><p class="modal-copy">Send a synthetic lead through the production automation flow.</p><form id="leadForm"><label>Representative<input name="representative" required placeholder="Elif"></label><label>Campaign<input name="campaign" required placeholder="dental-implant-istanbul"></label><label>Ad cost (TRY)<input name="ad_cost" type="number" min="0" step="0.01" required placeholder="180"></label><button class="primary submit" type="submit">Send Demo Lead</button><p class="form-status" id="leadStatus"></p></form></section></div>\n\n    <div class="modal-backdrop" id="saleModal"><section class="modal"><button class="close" data-close="saleModal">×</button><p class="eyebrow">DEMO INPUT</p><h2>Convert a sale</h2><p class="modal-copy">Convert a demo lead using its Meta lead ID.</p><form id="saleForm"><label>Lead<select name="meta_lead_id" id="saleLeadSelect" required><option value="">Select an open lead</option></select></label><div class="lead-preview" id="saleLeadPreview">Choose a lead to see its details.</div><label>Revenue (TRY)<input name="revenue" type="number" min="0.01" step="0.01" required placeholder="4500"></label><button class="primary submit" type="submit">Convert to Sale</button><p class="form-status" id="saleStatus"></p></form></section></div>\n\n    <footer>FastAPI · PostgreSQL · n8n · Google Sheets · Railway <a href="/docs">API Docs →</a></footer>
+    <div class="modal-backdrop" id="leadModal"><section class="modal"><button class="close" data-close="leadModal">×</button><p class="eyebrow">DEMO INPUT</p><h2>Add a lead</h2><p class="modal-copy">Send a synthetic lead through the production automation flow.</p><form id="leadForm"><label>Representative<input name="representative" required placeholder="Elif"></label><label>Campaign<input name="campaign" required placeholder="dental-implant-istanbul"></label><label>Ad cost (TRY)<input name="ad_cost" type="number" min="0" step="0.01" required placeholder="180"></label><button class="primary submit" type="submit">Send Demo Lead</button><p class="form-status" id="leadStatus"></p></form></section></div>
+
+    <div class="modal-backdrop" id="saleModal"><section class="modal"><button class="close" data-close="saleModal">×</button><p class="eyebrow">DEMO INPUT</p><h2>Convert a sale</h2><p class="modal-copy">Convert a demo lead using its Meta lead ID.</p><form id="saleForm"><label>Lead<select name="meta_lead_id" id="saleLeadSelect" required><option value="">Select an open lead</option></select></label><div class="lead-preview" id="saleLeadPreview">Choose a lead to see its details.</div><label>Revenue (TRY)<input name="revenue" type="number" min="0.01" step="0.01" required placeholder="4500"></label><button class="primary submit" type="submit">Convert to Sale</button><p class="form-status" id="saleStatus"></p></form></section></div>
+
+    <footer>FastAPI · PostgreSQL · n8n · Google Sheets · Railway <a href="/docs">API Docs →</a></footer>
   </main>
   <script src="/static/dashboard.js"></script>
 </body>
