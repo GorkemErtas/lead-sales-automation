@@ -14,7 +14,7 @@
         <h1>RevOps Live Dashboard</h1>
         <p class="subtitle">Real-time sales conversion and profitability analytics</p>
       </div>
-      <div class="live"><span></span>LIVE</div>
+      <div class="header-actions"><button class="primary" id="openLead">+ Add Demo Lead</button><button class="secondary" id="openSale">Convert Sale</button><div class="live"><span></span>LIVE</div></div>
     </header>
 
     <section class="cards">
@@ -48,7 +48,7 @@
       </article>
     </section>
 
-    <footer>FastAPI · PostgreSQL · n8n · Google Sheets · Railway <a href="/docs">API Docs →</a></footer>
+    <div class="modal-backdrop" id="leadModal"><section class="modal"><button class="close" data-close="leadModal">×</button><p class="eyebrow">DEMO INPUT</p><h2>Add a lead</h2><p class="modal-copy">Send a synthetic lead through the production automation flow.</p><form id="leadForm"><label>Representative<input name="representative" required placeholder="Elif"></label><label>Campaign<input name="campaign" required placeholder="dental-implant-istanbul"></label><label>Ad cost (TRY)<input name="ad_cost" type="number" min="0" step="0.01" required placeholder="180"></label><button class="primary submit" type="submit">Send Demo Lead</button><p class="form-status" id="leadStatus"></p></form></section></div>\n\n    <div class="modal-backdrop" id="saleModal"><section class="modal"><button class="close" data-close="saleModal">×</button><p class="eyebrow">DEMO INPUT</p><h2>Convert a sale</h2><p class="modal-copy">Convert a demo lead using its Meta lead ID.</p><form id="saleForm"><label>Meta lead ID<input name="meta_lead_id" required placeholder="META-DEMO-..."></label><label>Revenue (TRY)<input name="revenue" type="number" min="0.01" step="0.01" required placeholder="4500"></label><button class="primary submit" type="submit">Convert to Sale</button><p class="form-status" id="saleStatus"></p></form></section></div>\n\n    <footer>FastAPI · PostgreSQL · n8n · Google Sheets · Railway <a href="/docs">API Docs →</a></footer>
   </main>
   <script src="/static/dashboard.js"></script>
 </body>
