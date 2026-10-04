@@ -24,4 +24,10 @@ def create_sale(
     except LeadAlreadyConvertedError as exc:
         raise HTTPException(status_code=409, detail="Lead already converted") from exc
 
-    return SaleResponse.model_validate(sale)
+    return SaleResponse(
+        id=sale.id,
+        lead_id=sale.lead_id,
+        representative_id=sale.lead.representative_id,
+        revenue=sale.revenue,
+        created_at=sale.created_at,
+    )

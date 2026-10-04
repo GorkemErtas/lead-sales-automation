@@ -14,5 +14,6 @@ class SaleResponse(BaseModel):
 
     id: uuid.UUID
     lead_id: uuid.UUID
+    representative_id: uuid.UUID
     revenue: Decimal
     created_at: datetime
