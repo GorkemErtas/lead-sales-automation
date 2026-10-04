@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RevOps Live Dashboard</title>
+  <link rel="stylesheet" href="/static/dashboard.css">
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">LEAD SALES AUTOMATION</p>
+        <h1>RevOps Live Dashboard</h1>
+        <p class="subtitle">Real-time sales conversion and profitability analytics</p>
+      </div>
+      <div class="live"><span></span>LIVE</div>
+    </header>
+
+    <section class="cards">
+      <article><p>Total Leads</p><strong id="totalLeads">—</strong><small>All representatives</small></article>
+      <article><p>Converted Leads</p><strong id="convertedLeads">—</strong><small id="conversionRate">— conversion</small></article>
+      <article><p>Revenue</p><strong id="revenue">—</strong><small id="adCost">— ad cost</small></article>
+      <article><p>Net Profit</p><strong id="profit">—</strong><small id="roi">— ROI</small></article>
+    </section>
+
+    <section class="grid">
+      <article class="panel wide">
+        <div class="panel-head"><div><p class="eyebrow">PERFORMANCE</p><h2>Representative profitability</h2></div><span id="updated">Loading…</span></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Representative</th><th>Leads</th><th>Won</th><th>Conversion</th><th>Ad Cost</th><th>Revenue</th><th>Profit</th><th>ROI</th></tr></thead>
+            <tbody id="repRows"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel">
+        <p class="eyebrow">CONVERSION</p>
+        <h2>By representative</h2>
+        <div id="conversionBars" class="bars"></div>
+      </article>
+
+      <article class="panel">
+        <p class="eyebrow">PROFIT</p>
+        <h2>Contribution</h2>
+        <div id="profitBars" class="bars"></div>
+      </article>
+    </section>
+
+    <footer>FastAPI · PostgreSQL · n8n · Google Sheets · Railway <a href="/docs">API Docs →</a></footer>
+  </main>
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>
