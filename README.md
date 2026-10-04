@@ -8,7 +8,7 @@ The project demonstrates an end-to-end automation built with **n8n, Python/FastA
 
 | Lead ingestion | Sale conversion & metrics |
 | --- | --- |
-| ![Meta Lead Intake workflow](docs/screenshots/workflow1.png) | ![Sale Conversion workflow](docs/screenshots/workflow2.png) |
+| ![Meta Lead Intake workflow](docs/screenshots/workflow1.png) | ![Sale Conversion workflow](docs/screenshots/workflow2updated.png) |
 
 **Live reporting output**
 
