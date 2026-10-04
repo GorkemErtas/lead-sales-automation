@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.schemas.analytics import RepresentativeMetrics
+from app.schemas.analytics import DashboardMetrics, RepresentativeMetrics
 from app.services.analytics import AnalyticsService, RepresentativeNotFoundError
 
 router = APIRouter(prefix="/api/v1/analytics", tags=["analytics"])
@@ -20,3 +20,8 @@ def representative_metrics(
         return service.representative_metrics(db, representative_id)
     except RepresentativeNotFoundError as exc:
         raise HTTPException(status_code=404, detail="Representative not found") from exc
+
+
+@router.get("/dashboard", response_model=DashboardMetrics)
+def dashboard_metrics(db: Session = Depends(get_db)) -> DashboardMetrics:
+    return service.dashboard_metrics(db)
