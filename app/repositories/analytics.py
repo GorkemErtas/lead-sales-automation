@@ -22,3 +22,21 @@ class AnalyticsRepository:
             .where(SalesRepresentative.id == representative_id)
             .group_by(SalesRepresentative.id)
         ).one_or_none()
+
+
+    def all_representative_totals(self, db: Session):
+        return db.execute(
+            select(
+                SalesRepresentative.id,
+                SalesRepresentative.name,
+                func.count(Lead.id),
+                func.count(Lead.id).filter(Lead.status == LeadStatus.WON),
+                func.coalesce(func.sum(Lead.ad_cost), 0),
+                func.coalesce(func.sum(Sale.revenue), 0),
+            )
+            .select_from(SalesRepresentative)
+            .outerjoin(Lead, Lead.representative_id == SalesRepresentative.id)
+            .outerjoin(Sale, Sale.lead_id == Lead.id)
+            .group_by(SalesRepresentative.id)
+            .order_by(func.coalesce(func.sum(Sale.revenue), 0).desc())
+        ).all()
