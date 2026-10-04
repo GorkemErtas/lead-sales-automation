@@ -12,26 +12,35 @@ services:
       retries: 10
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
   api:
     build: .
     environment:
+      APP_ENV: development
       DATABASE_URL: postgresql+psycopg://postgres:postgres@postgres:5432/lead_sales
     ports:
       - "8000:8000"
     depends_on:
       postgres:
         condition: service_healthy
+
   n8n:
-    image: n8nio/n8n:latest
+    image: n8nio/n8n:2.41.6
     ports:
       - "5678:5678"
     environment:
+      API_BASE_URL: http://api:8000
       N8N_SECURE_COOKIE: "false"
+      N8N_UNVERIFIED_PACKAGES_ENABLED: "true"
+      N8N_RUNNERS_TASK_TIMEOUT: "300"
+      N8N_COMPRESSION_NODE_MAX_DECOMPRESSED_SIZE_BYTES: "2147483648"
+      N8N_COMPRESSION_NODE_MAX_ZIP_ENTRIES: "5000"
       GENERIC_TIMEZONE: Europe/Istanbul
     volumes:
       - n8n_data:/home/node/.n8n
     depends_on:
       - api
+
 volumes:
   postgres_data:
   n8n_data:
