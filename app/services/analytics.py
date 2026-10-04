@@ -4,7 +4,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from sqlalchemy.orm import Session
 
 from app.repositories.analytics import AnalyticsRepository
-from app.schemas.analytics import RepresentativeMetrics
+from app.schemas.analytics import DashboardMetrics, DashboardSummary, RepresentativeMetrics
 
 
 TWO_PLACES = Decimal("0.01")
@@ -51,4 +51,52 @@ class AnalyticsService:
             revenue=revenue.quantize(TWO_PLACES),
             profit=profit.quantize(TWO_PLACES),
             roi=roi.quantize(TWO_PLACES, rounding=ROUND_HALF_UP) if roi is not None else None,
+        )
+
+
+    def dashboard_metrics(self, db: Session) -> DashboardMetrics:
+        representatives: list[RepresentativeMetrics] = []
+        for representative_id, name, total_leads, converted_leads, ad_cost, revenue in self.repository.all_representative_totals(db):
+            ad_cost = Decimal(ad_cost)
+            revenue = Decimal(revenue)
+            profit = revenue - ad_cost
+            conversion_rate = (
+                Decimal(converted_leads) / Decimal(total_leads) * Decimal("100")
+                if total_leads else Decimal("0")
+            )
+            roi = profit / ad_cost * Decimal("100") if ad_cost > 0 else None
+            representatives.append(RepresentativeMetrics(
+                representative_id=representative_id,
+                representative_name=name,
+                total_leads=total_leads,
+                converted_leads=converted_leads,
+                conversion_rate=conversion_rate.quantize(TWO_PLACES, rounding=ROUND_HALF_UP),
+                ad_cost=ad_cost.quantize(TWO_PLACES),
+                revenue=revenue.quantize(TWO_PLACES),
+                profit=profit.quantize(TWO_PLACES),
+                roi=roi.quantize(TWO_PLACES, rounding=ROUND_HALF_UP) if roi is not None else None,
+            ))
+
+        total_leads = sum(r.total_leads for r in representatives)
+        converted_leads = sum(r.converted_leads for r in representatives)
+        ad_cost = sum((r.ad_cost for r in representatives), Decimal("0"))
+        revenue = sum((r.revenue for r in representatives), Decimal("0"))
+        profit = revenue - ad_cost
+        conversion_rate = (
+            Decimal(converted_leads) / Decimal(total_leads) * Decimal("100")
+            if total_leads else Decimal("0")
+        )
+        roi = profit / ad_cost * Decimal("100") if ad_cost > 0 else None
+
+        return DashboardMetrics(
+            summary=DashboardSummary(
+                total_leads=total_leads,
+                converted_leads=converted_leads,
+                conversion_rate=conversion_rate.quantize(TWO_PLACES, rounding=ROUND_HALF_UP),
+                ad_cost=ad_cost.quantize(TWO_PLACES),
+                revenue=revenue.quantize(TWO_PLACES),
+                profit=profit.quantize(TWO_PLACES),
+                roi=roi.quantize(TWO_PLACES, rounding=ROUND_HALF_UP) if roi is not None else None,
+            ),
+            representatives=representatives,
         )
