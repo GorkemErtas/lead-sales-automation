@@ -22,3 +22,32 @@ async function loadDashboard(){
  }catch(e){document.getElementById("updated").textContent="Unable to load live data";console.error(e)}
 }
 loadDashboard();setInterval(loadDashboard,15000);
+const LEAD_WEBHOOK="https://n8n-production-c116.up.railway.app/webhook/meta-lead";
+const SALE_WEBHOOK="https://n8n-production-c116.up.railway.app/webhook/sale-conversion";
+const modal=id=>document.getElementById(id);
+document.getElementById("openLead").onclick=()=>modal("leadModal").classList.add("open");
+document.getElementById("openSale").onclick=()=>modal("saleModal").classList.add("open");
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>modal(b.dataset.close).classList.remove("open"));
+document.querySelectorAll(".modal-backdrop").forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove("open")});
+
+async function postDemo(url,payload,statusId){
+ const el=document.getElementById(statusId);el.className="form-status";el.textContent="Sending through n8n…";
+ try{
+  const res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+  if(!res.ok)throw new Error("Workflow returned "+res.status);
+  el.className="form-status ok";el.textContent="Success — live metrics will refresh automatically.";
+  setTimeout(loadDashboard,700);
+  return true;
+ }catch(e){el.className="form-status error";el.textContent="Could not complete workflow. Check n8n execution.";return false}
+}
+document.getElementById("leadForm").onsubmit=async e=>{
+ e.preventDefault();const fd=new FormData(e.currentTarget);
+ const id="META-DEMO-"+Date.now();
+ const ok=await postDemo(LEAD_WEBHOOK,{lead_id:id,campaign:fd.get("campaign"),ad_cost:Number(fd.get("ad_cost")),representative:fd.get("representative")},"leadStatus");
+ if(ok){e.currentTarget.reset();document.getElementById("leadStatus").textContent="Created "+id+" — use this ID to convert the sale."}
+};
+document.getElementById("saleForm").onsubmit=async e=>{
+ e.preventDefault();const fd=new FormData(e.currentTarget);
+ const ok=await postDemo(SALE_WEBHOOK,{meta_lead_id:fd.get("meta_lead_id"),revenue:Number(fd.get("revenue"))},"saleStatus");
+ if(ok)e.currentTarget.reset();
+};
