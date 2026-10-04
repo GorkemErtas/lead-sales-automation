@@ -51,3 +51,27 @@ document.getElementById("saleForm").onsubmit=async e=>{
  const ok=await postDemo(SALE_WEBHOOK,{meta_lead_id:fd.get("meta_lead_id"),revenue:Number(fd.get("revenue"))},"saleStatus");
  if(ok)e.currentTarget.reset();
 };
+let recentLeads=[];
+async function loadLeads(){
+ try{
+  const res=await fetch("/api/v1/leads/recent",{cache:"no-store"});recentLeads=await res.json();
+  document.getElementById("leadRows").innerHTML=recentLeads.map(l=>'<tr><td><strong>'+l.representative_name+'</strong></td><td>'+l.campaign+'</td><td>'+money.format(num(l.ad_cost))+'</td><td><span class="status-pill '+l.status+'">'+l.status+'</span></td><td>'+(l.status==="won"?"Sold":'<button class="convert-btn" data-lead="'+l.meta_lead_id+'">Convert</button>')+'</td></tr>').join("");
+  const open=recentLeads.filter(l=>l.status!=="won");
+  const select=document.getElementById("saleLeadSelect");
+  const current=select.value;
+  select.innerHTML='<option value="">Select an open lead</option>'+open.map(l=>'<option value="'+l.meta_lead_id+'">'+l.representative_name+' — '+l.campaign+'</option>').join("");
+  if(open.some(l=>l.meta_lead_id===current))select.value=current;
+  document.querySelectorAll(".convert-btn").forEach(b=>b.onclick=()=>openSaleFor(b.dataset.lead));
+ }catch(e){console.error(e)}
+}
+function openSaleFor(id){
+ document.getElementById("saleLeadSelect").value=id;updateLeadPreview();modal("saleModal").classList.add("open");
+}
+function updateLeadPreview(){
+ const id=document.getElementById("saleLeadSelect").value,l=recentLeads.find(x=>x.meta_lead_id===id),p=document.getElementById("saleLeadPreview");
+ p.textContent=l?l.representative_name+" · "+l.campaign+" · "+money.format(num(l.ad_cost))+" ad cost":"Choose a lead to see its details.";
+}
+document.getElementById("saleLeadSelect").onchange=updateLeadPreview;
+const originalLoad=loadDashboard;
+loadDashboard=async function(){await originalLoad();await loadLeads()};
+loadLeads();
