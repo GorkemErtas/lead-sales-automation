@@ -19,3 +19,11 @@ def create_lead(
     if not created:
         response.status_code = status.HTTP_200_OK
     return LeadResponse.model_validate(lead)
+
+
+@router.get("/recent")
+def recent_leads(db: Session = Depends(get_db)):
+    items = []
+    for lead in service.list_recent(db):
+        items.append({"id": str(lead.id), "meta_lead_id": lead.meta_lead_id, "campaign": lead.campaign, "ad_cost": str(lead.ad_cost), "status": lead.status.value, "representative_name": lead.representative.name, "created_at": lead.created_at.isoformat()})
+    return items
